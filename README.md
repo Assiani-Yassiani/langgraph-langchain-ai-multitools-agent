@@ -7,17 +7,14 @@ Il choisit automatiquement le bon outil pour répondre aux questions (web, Wikip
 
 ## 🎥 Démo
 
-### 🖼 Aperçu de l’interface
+### 🎬 Voir la démo vidéo
 
-![AI Multi-Tools Agent UI](agent.png)
+**[▶️ Voir la vidéo de démonstration](https://vimeo.com/1142186456)**
 
-> Capture d’écran de l’onglet Chat (style Grok / Streamlit) et de l’onglet Analyse d’image.
+### 🖼 Aperçu de l’interface (cliquable)
 
-### 🎬 Vidéo de démonstration (stockée dans le repo)
+[![AI Multi-Tools Agent UI](agent.png)](https://vimeo.com/1142186456)
 
-<video controls width="100%" src="https://vimeo.com/1142186456">
-  Votre navigateur ne supporte pas la lecture vidéo intégrée.
-</video>
 
 
 ---
