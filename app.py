@@ -1,6 +1,4 @@
-# ====================================================================
-# APPLICATION GRADIO DESIGN GROK - INSPIRÉ STREAMLIT
-# ====================================================================
+
 
 !pip install -q gradio gtts pytz pillow
 
@@ -21,9 +19,7 @@ from datetime import datetime
 import base64
 from PIL import Image
 
-# ====================================================================
-# DÉFINIR TOUS LES TOOLS
-# ====================================================================
+
 
 @tool
 def scrape_url(url: str) -> str:
@@ -101,9 +97,7 @@ Fuseau: {timezone}"""
 tools = [scrape_url, search_wikipedia, search_web, summarize_text, 
          get_weather, get_current_time]
 
-# ====================================================================
-# CRÉER L'AGENT LANGGRAPH
-# ====================================================================
+
 
 llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
 llm_with_tools = llm.bind_tools(tools)
@@ -215,9 +209,7 @@ def generate_audio(text):
     except:
         return None
 
-# ====================================================================
-# CSS DESIGN GROK - MINIMALISTE & ÉLÉGANT
-# ====================================================================
+
 
 custom_css = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -410,12 +402,12 @@ textarea:focus, input[type="text"]:focus {
 """
 
 # ====================================================================
-# INTERFACE GRADIO - STYLE STREAMLIT
+# INTERFACE GRADIO 
 # ====================================================================
 
 with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as demo:
     
-    # Variables d'état
+
     last_user_msg = gr.State("")
     
     gr.HTML("""
@@ -427,10 +419,8 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
     
     with gr.Tabs():
         
-        # ==================== TAB CHATBOT ====================
         with gr.Tab("💬 Chat"):
             
-            # Suggestions centrées (visibles au début)
             with gr.Column(visible=True, elem_classes=["suggestions-center"]) as suggestions_box:
                 gr.HTML("<p style='text-align: center; color: var(--text-secondary); font-size: 1rem; margin-bottom: 1.5rem;'>💡 Suggestions rapides</p>")
                 with gr.Row():
@@ -440,7 +430,6 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
                     quick3 = gr.Button("📚 Wiki Python", elem_classes=["quick-suggestion"], size="sm")
                     quick4 = gr.Button("🌐 Scrape Python.org", elem_classes=["quick-suggestion"], size="sm")
             
-            # Chatbot (caché au début)
             chatbot = gr.Chatbot(
                 height=500,
                 show_label=False,
@@ -448,17 +437,14 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
                 visible=False
             )
             
-            # Boutons feedback SOUS le dernier message (comme Streamlit)
             with gr.Row(visible=False) as feedback_row:
                 regenerate_btn = gr.Button("🔄", size="sm", scale=1, min_width=50)
                 speak_btn = gr.Button("🔊", size="sm", scale=1, min_width=50)
                 gr.HTML("<div style='flex-grow: 1;'></div>")
                 clear_btn = gr.Button("🗑️ Effacer", size="sm", scale=1)
             
-            # Audio caché (autoplay)
             audio_output = gr.Audio(visible=False, autoplay=True)
             
-            # Input message
             with gr.Row():
                 msg = gr.Textbox(
                     placeholder="Tapez votre message ici...",
@@ -468,33 +454,29 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
                 )
                 submit_btn = gr.Button("📤", variant="primary", scale=1)
             
-            # Fonctions
+            
             def send_message(message, history, last_msg):
                 if not message.strip():
                     return history, "", last_msg, gr.update(visible=False), gr.update(visible=True), gr.update(visible=False)
                 
-                # Ajouter message utilisateur
                 history.append((message, None))
                 
-                # Obtenir réponse
                 answer = chat_function(message, history)
                 history[-1] = (message, answer)
                 
-                # Afficher chatbot, cacher suggestions, montrer feedback
                 return (
                     history, 
                     "", 
                     message,
-                    gr.update(visible=False),  # suggestions
-                    gr.update(visible=True),   # chatbot
-                    gr.update(visible=True)    # feedback
+                    gr.update(visible=False),  
+                    gr.update(visible=True),   
+                    gr.update(visible=True)    
                 )
             
             def regenerate_response(history, last_msg):
                 if not history or not last_msg:
                     return history
                 
-                # Régénérer la réponse
                 answer = chat_function(last_msg, history[:-1])
                 history[-1] = (last_msg, answer)
                 return history
@@ -513,9 +495,9 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
                     [], 
                     None, 
                     "",
-                    gr.update(visible=True),   # suggestions
-                    gr.update(visible=False),  # chatbot
-                    gr.update(visible=False)   # feedback
+                    gr.update(visible=True),   
+                    gr.update(visible=False),  
+                    gr.update(visible=False)   
                 )
             
             # Events
@@ -548,13 +530,11 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
                 outputs=[chatbot, audio_output, last_user_msg, suggestions_box, chatbot, feedback_row]
             )
             
-            # Quick suggestions - Remplir input
             quick1.click(lambda: "Quel temps fait-il à Paris ?", outputs=msg)
             quick2.click(lambda: "Quelle heure est-il ?", outputs=msg)
             quick3.click(lambda: "Cherche sur Wikipedia: Python", outputs=msg)
             quick4.click(lambda: "Scrape https://www.python.org/ et résume", outputs=msg)
         
-        # ==================== TAB ANALYSE IMAGE ====================
         with gr.Tab("🖼️ Image"):
             with gr.Row():
                 with gr.Column():
@@ -589,7 +569,7 @@ with gr.Blocks(css=custom_css, theme=gr.themes.Base(), title="🤖 Agent IA") as
     """)
 
 print("="*70)
-print("🚀 LANCEMENT INTERFACE STYLE STREAMLIT")
+print(" LANCEMENT INTERFACE STYLE STREAMLIT")
 print("="*70)
 
 demo.launch(share=True, show_error=True)
